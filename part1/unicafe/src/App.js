@@ -7,7 +7,9 @@ const Button = (props) => (
 )
 
 const StatDisplay = (props) => (
-  <p>{props.text} {props.number}</p>
+  <tr>
+    <td>{props.text}</td><td>{props.number}</td>
+  </tr>
 )
 
 const Statistics = (props) => {
@@ -15,14 +17,16 @@ const Statistics = (props) => {
     return <></>
   }
   return (
-    <>
-      <StatDisplay text="good" number={props.numbers.good} />
-      <StatDisplay text="neutral" number={props.numbers.neutral} />
-      <StatDisplay text="bad" number={props.numbers.bad} />
-      <StatDisplay text="all" number={props.functions.getTotal()} />
-      <StatDisplay text="average" number={props.functions.getMeanScore()} />
-      <StatDisplay text="positive" number={props.functions.getPositivePercent()} />
-    </>
+    <table>
+      <tbody>
+        <StatDisplay text="good" number={props.numbers.good} />
+        <StatDisplay text="neutral" number={props.numbers.neutral} />
+        <StatDisplay text="bad" number={props.numbers.bad} />
+        <StatDisplay text="all" number={props.functions.getTotal()} />
+        <StatDisplay text="average" number={props.functions.getMeanScore()} />
+        <StatDisplay text="positive" number={props.functions.getPositivePercent()} />
+      </tbody>
+    </table>
   )
 }
 
