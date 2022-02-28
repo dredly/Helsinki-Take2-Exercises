@@ -6,8 +6,10 @@ const Button = (props) => (
   </button>
 )
 
-const Anecdote = ({ text }) => (
-  <div>{text}</div>
+const Anecdote = ({ text, votes }) => (
+  <div>{text}
+    <p>has {votes} votes.</p>
+  </div>
 )
 
 const App = () => {
@@ -21,16 +23,24 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients'
   ]
 
-  const [selected, setSelected] = useState(0)
+  const [selected, setSelected] = useState(0);
+  const [votes, setVotes] = useState(Array(anecdotes.length).fill(0));
 
   const selectRandom = () => {
     const randInd = Math.floor(Math.random() * anecdotes.length);
     setSelected(randInd);
   }
 
+  const vote = ind => () => {
+    const copy = [...votes];
+    copy[ind]++;
+    setVotes(copy);
+  }
+
   return (
     <div>
-      <Anecdote text={anecdotes[selected]} />
+      <Anecdote text={anecdotes[selected]} votes={votes[selected]} />
+      <Button text="vote" handleClick={vote(selected)} />
       <Button text="next anecdote" handleClick={selectRandom} />
     </div>
 
