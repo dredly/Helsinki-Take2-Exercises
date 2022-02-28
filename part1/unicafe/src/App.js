@@ -10,6 +10,19 @@ const StatDisplay = (props) => (
   <p>{props.text} {props.number}</p>
 )
 
+const Statistics = (props) => {
+  return (
+    <>
+      <StatDisplay text="good" number={props.numbers.good} />
+      <StatDisplay text="neutral" number={props.numbers.neutral} />
+      <StatDisplay text="bad" number={props.numbers.bad} />
+      <StatDisplay text="all" number={props.functions.getTotal()} />
+      <StatDisplay text="average" number={props.functions.getMeanScore()} />
+      <StatDisplay text="positive" number={props.functions.getPositivePercent()} />
+    </>
+  )
+}
+
 const Heading = ({ text }) => <h2>{text}</h2>
 
 const App = () => {
@@ -36,12 +49,11 @@ const App = () => {
       <Button text="neutral" handleClick={() => setNeutral(neutral + 1)} />
       <Button text="bad" handleClick={() => setBad(bad + 1)} />
       <Heading text="statistics" />
-      <StatDisplay text="good" number={good} />
-      <StatDisplay text="neutral" number={neutral} />
-      <StatDisplay text="bad" number={bad} />
-      <StatDisplay text="all" number={getTotal()} />
-      <StatDisplay text="average" number={getMeanScore()} />
-      <StatDisplay text="positive" number={getPositivePercent()} />
+      <Statistics numbers={{
+        good, neutral, bad
+      }} functions={{
+        getTotal, getMeanScore, getPositivePercent
+      }} />
     </div>
   )
 }
