@@ -11,6 +11,9 @@ const StatDisplay = (props) => (
 )
 
 const Statistics = (props) => {
+  if (!props.functions.getTotal()) {
+    return <></>
+  }
   return (
     <>
       <StatDisplay text="good" number={props.numbers.good} />
