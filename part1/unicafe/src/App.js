@@ -18,6 +18,17 @@ const App = () => {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
+  const getTotal = () => good + neutral + bad;
+  const getTotalScore = () => good - bad;
+
+  const getMeanScore = () => {
+    return getTotal() ? getTotalScore() / getTotal() : "";
+  }
+
+  const getPositivePercent = () => {
+    return getTotal() ? (good / getTotal()) * 100 + " %" : "";
+  }
+
   return (
     <div>
       <Heading text="give feedback" />
@@ -28,6 +39,9 @@ const App = () => {
       <StatDisplay text="good" number={good} />
       <StatDisplay text="neutral" number={neutral} />
       <StatDisplay text="bad" number={bad} />
+      <StatDisplay text="all" number={getTotal()} />
+      <StatDisplay text="average" number={getMeanScore()} />
+      <StatDisplay text="positive" number={getPositivePercent()} />
     </div>
   )
 }
