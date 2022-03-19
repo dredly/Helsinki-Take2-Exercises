@@ -1,5 +1,21 @@
 import { useState } from 'react'
 
+const Filter = ({ searchText, handleSearch }) => (
+  <p>Filter shown with <input value={searchText} onChange={handleSearch} /></p>
+);
+
+const PersonForm = (props) => (
+  <form onSubmit={props.addPerson}>
+    <div>
+      name: <input value={props.newName} onChange={props.handleNameChange} />
+      number: <input value={props.newNumber} onChange={props.handleNumberChange} />
+    </div>
+    <div>
+      <button type="submit">add</button>
+    </div>
+  </form>
+);
+
 const People = ({ personsArray, searchText }) => {
   return (
     <>
@@ -10,7 +26,7 @@ const People = ({ personsArray, searchText }) => {
       }
     </>
   )
-}
+};
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -50,17 +66,13 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <p>Filter shown with <input value={searchText} onChange={handleSearch} /></p>
+      <Filter searchText={searchText} handleSearch={handleSearch} />
       <h2>Add new entry</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-          number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm
+        addPerson={addPerson}
+        newName={newName} handleNameChange={handleNameChange}
+        newNumber={newNumber} handleNumberChange={handleNumberChange}
+      />
       <h2>Numbers</h2>
       <People personsArray={persons} searchText={searchText} />
     </div>
