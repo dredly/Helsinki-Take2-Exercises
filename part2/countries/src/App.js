@@ -10,10 +10,12 @@ const CountrySearch = ({ search, handleChange }) => {
   )
 }
 
-const CountryList = ({ countries }) => {
+const CountryList = ({ countries, handleShow }) => {
   return (
     <ul>
-      {countries.map(result => <li key={result.cca3}>{result.name.common}</li>)}
+      {countries.map(result => (
+        <li key={result.cca3}>{result.name.common} <button value={result.name.common} onClick={handleShow}>show</button></li>
+      ))}
     </ul>
   )
 }
@@ -35,14 +37,14 @@ const CountryDetails = ({ country }) => {
   )
 }
 
-const SearchOutcome = ({ results }) => {
+const SearchOutcome = ({ results, handleShow }) => {
   if (results.length > 10) {
     return (
       <p>Too many matches, specify another filter</p>
     )
   }
   if (results.length > 1 && results.length <= 10) {
-    return <CountryList countries={results} />
+    return <CountryList countries={results} handleShow={handleShow} />
   }
   if (results.length === 1) {
     return <CountryDetails country={results[0]} />
@@ -72,10 +74,17 @@ const App = () => {
     // console.log(results.map(result => result.name.common));
   }
 
+  const handleShow = evt => {
+    setSearch(evt.target.value);
+    setResults(countries.filter(country => (
+      country.name.common.toLowerCase().includes(evt.target.value.toLowerCase())
+    )));
+  }
+
   return (
     <div>
       <CountrySearch search={search} handleChange={handleChange} />
-      <SearchOutcome results={results} />
+      <SearchOutcome results={results} handleShow={handleShow} />
     </div>
   );
 }
