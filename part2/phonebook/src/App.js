@@ -18,13 +18,22 @@ const PersonForm = (props) => (
   </form>
 );
 
-const People = ({ personsArray, searchText }) => {
+const Person = (props) => (
+  <p>
+    {props.name} {props.number}
+    <button onClick={() => props.handleDelete(props.id)}>Delete</button>
+  </p>
+)
+
+const People = ({ personsArray, searchText, handleDelete }) => {
   return (
     <>
       {
         personsArray
           .filter(person => person.name.toLowerCase().includes(searchText.toLowerCase()))
-          .map(person => <p key={person.id}>{person.name} {person.number}</p>)
+          .map(person => (
+            <Person key={person.id} id={person.id} name={person.name} number={person.number} handleDelete={handleDelete} />
+          ))
       }
     </>
   )
@@ -76,6 +85,13 @@ const App = () => {
       })
   }
 
+  const deletePerson = id => {
+    if (window.confirm('Are you sure')) {
+      personService.deletePerson(id)
+      setPersons(persons.filter(person => person.id !== id));
+    }
+  }
+
   return (
     <div>
       <h1>Phonebook</h1>
@@ -87,7 +103,7 @@ const App = () => {
         newNumber={newNumber} handleNumberChange={handleNumberChange}
       />
       <h2>Numbers</h2>
-      <People personsArray={persons} searchText={searchText} />
+      <People personsArray={persons} searchText={searchText} handleDelete={deletePerson} />
     </div>
   )
 }
