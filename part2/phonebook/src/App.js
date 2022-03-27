@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import personService from './services/persons';
 
 const Filter = ({ searchText, handleSearch }) => (
@@ -69,20 +68,36 @@ const App = () => {
   const addPerson = evt => {
     evt.preventDefault();
     const matches = persons.filter(person => person.name === newName);
-    if (matches.length) {
-      return alert(`${newName} is already added to phonebook`);
-    }
     const personObj = {
       name: newName,
       number: newNumber
     }
-    personService
-      .create(personObj)
-      .then(returnedPerson => {
-        setPersons(persons.concat(returnedPerson));
-        setNewName('');
-        setNewNumber('');
-      })
+    if (matches.length) {
+      const person = matches[0];
+      if (window.confirm(`${person.name} is already in the phonebook. Would you like to update their number?`)) {
+        console.log('Update number functionality will be here');
+        const id = person.id;
+        const changedPerson = { ...person, number: newNumber };
+        personService
+          .update(id, changedPerson)
+          .then(returnedPerson => {
+            setPersons(persons.map(person => person.id !== id ? person : returnedPerson));
+          })
+          .catch(err => {
+            alert(`The person '${person.content}' was already deleted from the server`);
+            setPersons(persons.filter(p => p.id !== id));
+          })
+      }
+    } else {
+      personService
+        .create(personObj)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson));
+          setNewName('');
+          setNewNumber('');
+        })
+    }
+
   }
 
   const deletePerson = id => {

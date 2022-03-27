@@ -7,8 +7,13 @@
     },
     {
       "name": "miguel",
-      "number": "12567",
+      "number": "12",
       "id": 5
+    },
+    {
+      "name": "cadno",
+      "number": "666",
+      "id": 6
     }
   ]
 }
