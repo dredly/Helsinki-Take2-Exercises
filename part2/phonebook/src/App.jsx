@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Notification from './components/Notification';
 import personService from './services/persons';
 
 const Filter = ({ searchText, handleSearch }) => (
@@ -43,6 +44,7 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [searchText, setSearchText] = useState('');
+  const [message, setMessage] = useState({});
 
   useEffect(() => {
     personService
@@ -82,6 +84,13 @@ const App = () => {
           .update(id, changedPerson)
           .then(returnedPerson => {
             setPersons(persons.map(person => person.id !== id ? person : returnedPerson));
+            setMessage({
+              content: `Number has been updated for ${returnedPerson.name}.`,
+              messageType: 'success'
+            });
+            setTimeout(() => {
+              setMessage({});
+            }, 3000);
           })
           .catch(err => {
             alert(`The person '${person.content}' was already deleted from the server`);
@@ -95,6 +104,13 @@ const App = () => {
           setPersons(persons.concat(returnedPerson));
           setNewName('');
           setNewNumber('');
+          setMessage({
+            content: `${returnedPerson.name} has been added to the phonebook`,
+            messageType: 'success'
+          });
+          setTimeout(() => {
+            setMessage({});
+          }, 3000);
         })
     }
 
@@ -110,6 +126,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification message={message} />
       <Filter searchText={searchText} handleSearch={handleSearch} />
       <h2>Add new entry</h2>
       <PersonForm
