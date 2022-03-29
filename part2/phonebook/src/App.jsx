@@ -93,7 +93,13 @@ const App = () => {
             }, 3000);
           })
           .catch(err => {
-            alert(`The person '${person.content}' was already deleted from the server`);
+            setMessage({
+              content: `Information for '${person.name}' has already been deleted from the server`,
+              messageType: 'error'
+            })
+            setTimeout(() => {
+              setMessage({});
+            }, 3000);
             setPersons(persons.filter(p => p.id !== id));
           })
       }
